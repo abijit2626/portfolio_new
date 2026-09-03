@@ -112,3 +112,4 @@ This project is a customized, personal evolution of the **Persona 3 UI** web exp
 | :--- | :--- | :--- |
 | **blairxu13** | Original UI design, base styling, and structure template | [@blairxu13](https://github.com/blairxu13) |
 | **Abijit Arun** | Cyber-Lab UI aesthetics, blue team architecture, security integrations, and key controls | [@abijit2626](https://github.com/abijit2626) |
+
