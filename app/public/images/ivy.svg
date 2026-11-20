@@ -1,0 +1,21 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 90 400">
+  <defs>
+    <filter id="cut" x="-30%" y="-30%" width="160%" height="160%">
+      <feDropShadow dx="1.5" dy="2" stdDeviation="1.4" flood-color="#1f3a2b" flood-opacity="0.35"/>
+    </filter>
+    <g id="leaf">
+      <path d="M0 0 C -9 -6, -13 -16, -6 -21 C -2 -24, 0 -20, 0 -17 C 0 -20, 2 -24, 6 -21 C 13 -16, 9 -6, 0 0Z"/>
+    </g>
+  </defs>
+  <path d="M45 0 C 20 50, 70 100, 45 150 S 20 250, 45 300 S 70 370, 45 400" fill="none" stroke="#3e6b3a" stroke-width="3" stroke-linecap="round" filter="url(#cut)"/>
+  <g filter="url(#cut)">
+    <use href="#leaf" transform="translate(36 30) rotate(-50) scale(1.1)" fill="#5f8a4a"/>
+    <use href="#leaf" transform="translate(58 75) rotate(55)" fill="#9cbf6b"/>
+    <use href="#leaf" transform="translate(48 118) rotate(-35) scale(0.9)" fill="#3e6b3a"/>
+    <use href="#leaf" transform="translate(30 170) rotate(-70) scale(1.15)" fill="#9cbf6b"/>
+    <use href="#leaf" transform="translate(38 215) rotate(40) scale(0.85)" fill="#5f8a4a"/>
+    <use href="#leaf" transform="translate(55 262) rotate(65) scale(1.05)" fill="#3e6b3a"/>
+    <use href="#leaf" transform="translate(52 320) rotate(-40)" fill="#9cbf6b"/>
+    <use href="#leaf" transform="translate(60 365) rotate(60) scale(0.9)" fill="#5f8a4a"/>
+  </g>
+</svg>

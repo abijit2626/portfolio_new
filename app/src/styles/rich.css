@@ -1,0 +1,432 @@
+/* =====================================================================
+   rich layer ("warm & cozy"): color, texture, light and motion on top of
+   base + components. Delete this file (and its import in main.jsx) to go
+   back to the plain look.
+   ===================================================================== */
+
+:root {
+  --kraft: #e8cfa6;
+  --sun: #f08a3c;
+  --sun-soft: #f6c48f;
+  --rust: #bf4e24;
+  --plum: #8a4a6b;
+  --teal: #2f6f73;
+  --gold: #e0a43a;
+
+  --glow-a: rgba(255,168,72,.42);
+  --glow-b: rgba(226,120,58,.20);
+  --glow-c: rgba(150,70,50,.18);
+  --vignette: rgba(120,58,14,.28);
+  --page-ink: #7a5a3c;
+
+  --sheet: linear-gradient(135deg, #fffcf5, #f6ead6);
+  --name-grad: linear-gradient(115deg, var(--ink) 35%, #6b3a22 68%, var(--rust));
+  --shot: linear-gradient(180deg, #93bfd0 0%, #ecd3ac 58%, #f3934f 100%);
+
+  --lift: 0 1px 1px rgba(80,45,15,.08), 0 4px 10px rgba(80,45,15,.12), 0 16px 30px -8px rgba(80,45,15,.32);
+  --lift-hi: 0 2px 2px rgba(80,45,15,.08), 0 10px 18px rgba(80,45,15,.16), 0 30px 46px -10px rgba(80,45,15,.40);
+}
+
+html { scrollbar-color: #c08a52 var(--kraft); }
+::selection { background: var(--sun-soft); color: var(--ink); }
+
+/* ---------------- page background ---------------- */
+body {
+  background:
+    radial-gradient(1100px 700px at 6% -8%, var(--glow-a), transparent 60%),
+    radial-gradient(900px 640px at 106% 26%, var(--glow-b), transparent 62%),
+    radial-gradient(1100px 800px at 40% 118%, var(--glow-c), transparent 62%),
+    url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='240' height='240'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='.7' numOctaves='4'/><feColorMatrix values='0 0 0 0 .35 0 0 0 0 .25 0 0 0 0 .14 0 0 0 .22 0'/></filter><rect width='100%' height='100%' filter='url(%23n)'/></svg>"),
+    var(--kraft);
+  background-attachment: fixed, fixed, fixed, scroll;
+}
+body::before {
+  content: ""; position: fixed; inset: 0; z-index: -1; pointer-events: none;
+  background: radial-gradient(ellipse at 50% 40%, transparent 52%, var(--vignette) 100%);
+}
+
+/* text that sits straight on the page, not on paper */
+.drag-tip, .footer-tip, footer .pixel { color: var(--page-ink); }
+
+/* ---------------- paper + tape ---------------- */
+.paper { box-shadow: var(--lift); }
+.tape {
+  background-image:
+    linear-gradient(180deg, rgba(255,255,255,.4), rgba(255,255,255,0) 55%),
+    repeating-linear-gradient(90deg, rgba(255,255,255,.16) 0 2px, transparent 2px 7px);
+  clip-path: polygon(0 10%, 3% 0, 50% 4%, 97% 0, 100% 12%, 98% 50%, 100% 90%, 96% 100%, 50% 95%, 3% 100%, 0 88%, 2% 50%);
+}
+
+/* ---------------- top nav ---------------- */
+.topnav a {
+  background-image: linear-gradient(180deg, rgba(255,255,255,.14), rgba(0,0,0,.12));
+  box-shadow: 0 2px 0 rgba(0,0,0,.25), 0 8px 14px -6px rgba(0,0,0,.35);
+  text-shadow: 0 1px 0 rgba(0,0,0,.35);
+  transition: transform .15s, box-shadow .15s;
+}
+.topnav a:hover { box-shadow: 0 4px 0 rgba(0,0,0,.22), 0 14px 20px -8px rgba(0,0,0,.4); }
+
+/* ---------------- section labels ---------------- */
+h2 {
+  position: relative; padding-left: 1.9rem; border-radius: 3px;
+  background: linear-gradient(180deg, #3b332c, #1f1b17);
+  text-shadow: 0 -1px 0 rgba(0,0,0,.7), 0 1px 0 rgba(255,255,255,.12);
+  box-shadow: inset 0 1px 0 rgba(255,255,255,.08), 0 2px 0 rgba(0,0,0,.28), 0 10px 18px -8px rgba(0,0,0,.4);
+}
+h2::before {
+  content: ""; position: absolute; left: .75rem; top: 50%; width: .55rem; height: .55rem; margin-top: -.275rem;
+  border-radius: 50%; background: var(--sun); box-shadow: 0 0 10px 1px var(--sun);
+  animation: pulse 2.6s ease-in-out infinite;
+}
+h2:nth-of-type(3n+2)::before { background: var(--sage); box-shadow: 0 0 10px 1px var(--sage); }
+h2:nth-of-type(3n)::before { background: #f7a8c4; box-shadow: 0 0 10px 1px #f7a8c4; }
+@keyframes pulse { 50% { transform: scale(.7); opacity: .7; } }
+
+/* ---------------- hero ---------------- */
+.namecard {
+  background-color: var(--paper);
+  background-image:
+    radial-gradient(rgba(191,78,36,.14) 1px, transparent 1.3px),
+    radial-gradient(600px 300px at 0% 0%, rgba(246,196,143,.45), transparent 70%),
+    var(--sheet);
+  background-size: 18px 18px, 100% 100%, 100% 100%;
+}
+.namecard h1 { background: var(--name-grad); -webkit-background-clip: text; background-clip: text; color: transparent; filter: drop-shadow(0 3px 0 rgba(240,138,60,.28)); }
+.namecard h1 .dot { color: var(--sun); display: inline-block; animation: bounce 2.4s ease-in-out infinite; }
+@keyframes bounce { 0%, 70%, 100% { transform: translateY(0); } 80% { transform: translateY(-14px); } 90% { transform: translateY(2px); } }
+.namecard .scribble { background: linear-gradient(transparent 62%, rgba(246,196,143,.7) 62% 92%, transparent 92%); display: inline; }
+
+.doodles .doodle { animation: twinkle 3s ease-in-out infinite; }
+.doodle.spark { right: 170px; top: 64px; color: var(--plum); font-size: 1.3rem; animation-delay: -1s; }
+.doodle.heart { right: 138px; top: 112px; color: var(--rust); font-size: 1.4rem; animation-delay: -2s; }
+.doodle.squiggle { right: auto; left: 46%; bottom: auto; top: 26px; }
+@keyframes twinkle { 50% { transform: scale(1.3) rotate(15deg); opacity: .6; } }
+
+.badge {
+  position: absolute; left: -46px; bottom: -38px; width: 100px; height: 100px; z-index: 4; color: var(--rust);
+  border-radius: 50%; background: radial-gradient(circle, var(--paper) 0 64%, transparent 65%);
+  filter: drop-shadow(2px 4px 4px rgba(60,40,20,.25)); transform: rotate(-12deg);
+}
+.badge::before { content: ""; position: absolute; inset: 14px; border-radius: 50%; border: 2px dashed rgba(191,78,36,.45); }
+.badge svg { width: 100%; height: 100%; animation: spin 22s linear infinite; overflow: visible; }
+.badge text { font-family: "Pixel", monospace; font-size: 10px; letter-spacing: 1.2px; fill: currentColor; text-transform: uppercase; }
+.badge-core { position: absolute; left: 50%; top: 50%; width: 30px; margin: -15px 0 0 -15px; animation: pulse 2.4s ease-in-out infinite; }
+
+.polaroid { box-shadow: 0 2px 3px rgba(60,40,20,.12), 0 14px 26px rgba(60,40,20,.22), 0 34px 50px -18px rgba(60,40,20,.42); transition: transform .4s ease, box-shadow .4s ease; }
+.polaroid:hover { transform: rotate(1deg) translateY(-6px); }
+.polaroid .shot { background: var(--shot); filter: saturate(1.05); }
+.polaroid .shot::after {
+  content: ""; position: absolute; inset: 0; z-index: 2; pointer-events: none;
+  background: linear-gradient(125deg, rgba(255,255,255,.38), rgba(255,255,255,0) 38%), radial-gradient(ellipse at 50% 120%, rgba(120,50,20,.25), transparent 60%);
+}
+.polaroid .shot img.twinkle { position: absolute; z-index: 1; bottom: auto; transform: none; animation: twinkle 2.6s ease-in-out infinite; }
+.polaroid .shot img.twinkle.t1 { width: 22px; left: 14%; top: 16%; }
+.polaroid .shot img.twinkle.t2 { width: 14px; left: 26%; top: 42%; animation-delay: -.9s; }
+.polaroid .shot img.twinkle.t3 { width: 18px; left: auto; right: 12%; top: 66%; animation-delay: -1.7s; }
+
+/* ---------------- stickers: idle bob ---------------- */
+.sticker { animation: bob 5s ease-in-out infinite; }
+.sticker:nth-of-type(odd) { animation-duration: 6.4s; animation-delay: -2s; }
+.sticker:nth-of-type(3n) { animation-duration: 4.4s; animation-delay: -1s; }
+.sticker.dragging { animation-play-state: paused; }
+@keyframes bob { 50% { translate: 0 -7px; } }
+
+/* ---------------- things i love ---------------- */
+.loves .reveal:nth-child(5n+1) .love { --accent: var(--sun); }
+.loves .reveal:nth-child(5n+2) .love { --accent: var(--ivy); }
+.loves .reveal:nth-child(5n+3) .love { --accent: var(--plum); }
+.loves .reveal:nth-child(5n+4) .love { --accent: var(--teal); }
+.loves .reveal:nth-child(5n)   .love { --accent: var(--gold); }
+.loves .love {
+  border-top: 5px solid var(--accent, var(--sun));
+  background-image: linear-gradient(180deg, color-mix(in srgb, var(--accent, var(--sun)) 12%, #fffdf8), #fbf6ec);
+  transition: transform .25s cubic-bezier(.3,1.6,.5,1), box-shadow .25s ease;
+  transform: rotate(-2.5deg);
+}
+.loves .reveal:nth-child(even) .love { transform: rotate(2deg); }
+.loves .love:hover { transform: rotate(0) translateY(-8px) scale(1.04); box-shadow: var(--lift-hi); }
+.loves .love img {
+  border-radius: 50%; padding: 6px;
+  background: radial-gradient(circle, color-mix(in srgb, var(--accent, var(--sun)) 28%, transparent) 0 62%, transparent 64%);
+}
+.loves .love:hover img { animation: hop .5s ease; }
+@keyframes hop { 40% { transform: translateY(-10px) rotate(-8deg); } 70% { transform: translateY(0) rotate(4deg); } }
+.loves .love .hand { color: color-mix(in srgb, var(--accent, var(--ink)) 55%, var(--ink)); }
+
+/* ---------------- turntable ---------------- */
+.spin {
+  background-image:
+    radial-gradient(520px 280px at 0% 0%, rgba(240,138,60,.16), transparent 65%),
+    radial-gradient(420px 260px at 100% 100%, rgba(62,107,58,.12), transparent 65%),
+    var(--sheet);
+  transition: box-shadow .5s ease;
+}
+.spin:has(.deck.playing) { box-shadow: var(--lift), 0 0 0 2px rgba(240,138,60,.4), 0 0 50px -6px rgba(240,138,60,.7); }
+.deck {
+  background:
+    repeating-linear-gradient(98deg, rgba(60,30,10,.07) 0 2px, transparent 2px 10px),
+    linear-gradient(135deg, #c48d55, #8a5a30);
+  box-shadow: inset 0 0 0 6px #6b4226, inset 0 0 0 7px rgba(255,255,255,.15), 0 6px 0 rgba(0,0,0,.18), 0 20px 30px -10px rgba(40,20,5,.5);
+}
+.deck .platter { box-shadow: inset 0 0 0 3px #57514a, 0 3px 6px rgba(0,0,0,.4); }
+.deck.playing .record { box-shadow: 0 3px 8px rgba(0,0,0,.35), 0 0 24px 3px color-mix(in srgb, var(--label) 50%, transparent); }
+.sleeve {
+  text-shadow: 0 1px 2px rgba(0,0,0,.45);
+  box-shadow: inset 0 0 0 1px rgba(255,255,255,.18), inset 0 -26px 30px -14px rgba(0,0,0,.35), inset 10px 10px 24px -14px rgba(255,255,255,.45), 2px 4px 0 rgba(0,0,0,.18);
+}
+.eq i { border-radius: 2px 2px 0 0; }
+
+/* ---------------- journal notes ---------------- */
+.note {
+  background-image:
+    repeating-linear-gradient(180deg, transparent 0 27px, rgba(110,140,175,.16) 27px 28px),
+    var(--sheet);
+  transition: transform .25s cubic-bezier(.3,1.6,.5,1), box-shadow .25s ease;
+}
+.note:hover { box-shadow: var(--lift-hi); }
+.note .tape { transition: transform .25s ease; }
+.note:hover .tape { transform: rotate(-4deg) translateY(-3px); }
+.note::after {
+  content: "✦"; position: absolute; right: 16px; top: 12px; color: var(--sun); font-size: 1.2rem;
+  opacity: 0; transform: scale(.3) rotate(-40deg); transition: opacity .2s, transform .3s cubic-bezier(.3,1.8,.5,1);
+}
+.note:hover::after { opacity: 1; transform: scale(1) rotate(0); }
+.note.on { background-image: linear-gradient(160deg, #fbdcbc, var(--sun-soft) 55%, #f3a466); box-shadow: var(--lift), 0 0 34px -6px rgba(240,138,60,.65); }
+.note.on::before {
+  content: ""; position: absolute; top: 12px; right: 16px; width: 14px; height: 14px; border-radius: 50%;
+  background: radial-gradient(circle at 35% 35%, #ff9e80, var(--rust)); box-shadow: 1px 2px 0 rgba(0,0,0,.25);
+}
+.note.on::after { right: 40px; }
+.note .num { display: inline-block; font-size: .9rem; padding: 0 .45rem; margin-bottom: .3rem; background: var(--ink); color: var(--paper); border-radius: 2px; }
+.note.on .num { background: var(--rust); }
+.note.soon { background-image: repeating-linear-gradient(-45deg, #f6efe2 0 12px, #f0e6d4 12px 24px); }
+.note .peek { animation: bob 3.6s ease-in-out infinite; }
+
+/* ---------------- project + terminal ---------------- */
+.project { background-image: var(--sheet); }
+.bottom .project::after {
+  content: "in progress"; position: absolute; right: 18px; top: 16px;
+  font-family: "Pixel", monospace; font-size: .72rem; letter-spacing: .06em; text-transform: uppercase;
+  padding: .05rem .5rem; border: 2px solid var(--rust); color: var(--rust); transform: rotate(8deg); opacity: .8;
+}
+.project .thumb { transition: transform .3s cubic-bezier(.3,1.6,.5,1); }
+.project .thumb:hover { transform: rotate(2deg) scale(1.05); }
+.project .thumb div { background: var(--shot); }
+.chip { border-radius: 2px; box-shadow: 0 2px 0 rgba(0,0,0,.18); }
+.chip:nth-child(3n+2) { background: var(--ivy); }
+.chip:nth-child(3n) { background: var(--rust); }
+
+.term {
+  background: linear-gradient(180deg, #2a2520, #1a1815);
+  border-radius: 8px;
+  box-shadow: inset 0 1px 0 rgba(255,255,255,.07), 0 0 0 1px rgba(0,0,0,.45), 0 6px 10px rgba(0,0,0,.2), 0 24px 36px -12px rgba(0,0,0,.5);
+}
+.term::after {
+  content: ""; position: absolute; inset: 0; border-radius: inherit; pointer-events: none;
+  background: repeating-linear-gradient(0deg, rgba(255,255,255,.025) 0 1px, transparent 1px 3px);
+}
+.term .p { text-shadow: 0 0 8px rgba(240,138,60,.6); }
+.term .ok { text-shadow: 0 0 8px rgba(156,191,107,.45); }
+.cursor { box-shadow: 0 0 8px rgba(217,210,195,.6); }
+
+/* ---------------- month / project pages ---------------- */
+.month-hero, .proj-title, .why, .feature, .work, .todo, .blank { background-image: var(--sheet); }
+.month-strip a { border-radius: 2px; transition: transform .15s; }
+.month-strip a.on { box-shadow: 0 2px 0 rgba(0,0,0,.2), 0 0 18px -4px rgba(240,138,60,.8); }
+
+/* ---------------- footer ---------------- */
+footer { max-width: 1020px; margin: 2rem auto 0; border-top: 2px dashed rgba(122,90,60,.3); }
+
+/* ---------------- small screens ---------------- */
+@media (max-width: 820px) {
+  .badge { left: -14px; bottom: -30px; width: 84px; height: 84px; }
+}
+@media (max-width: 560px) {
+  .badge, .doodle.spark, .doodle.heart { display: none; }
+}
+
+/* =====================================================================
+   moods from the opening record picker: <html data-look="orange|blonde|endless">
+   "orange" is the default look above. The two below override it.
+   ===================================================================== */
+
+/* ---------------- blonde: spring. pink + white sky, flowers, ivy ---------------- */
+:root[data-look="blonde"] {
+  --kraft: #f7e3ea;
+  --paper: #fffdfd;
+  --ink: #2a1f24;
+  --mute: #8a7079;
+  --sun: #e2789b;
+  --sun-soft: #fbd6e2;
+  --rust: #b4527a;
+  --sage: #b9dc86;
+  --ivy: #4f8a35;
+  --plum: #c06f9a;
+  --teal: #6fa8bd;
+  --gold: #e6b8a0;
+  --tape: rgba(255,255,255,.7);
+  --tape-g: rgba(170,212,120,.55);
+  --tape-p: rgba(247,168,196,.6);
+
+  --vignette: rgba(180,90,120,.16);
+  --page-ink: #8a4f63;
+  --sheet: linear-gradient(135deg, #ffffff, #fdf1f5);
+  --name-grad: linear-gradient(115deg, var(--ink) 38%, #b4527a 70%, #e2789b);
+  --shot: linear-gradient(180deg, #f3bccd 0%, #fde6ee 52%, #a9d3e0 100%);
+  --lift: 0 1px 1px rgba(120,50,80,.06), 0 4px 10px rgba(120,50,80,.08), 0 18px 32px -10px rgba(120,50,80,.26);
+  --lift-hi: 0 2px 2px rgba(120,50,80,.06), 0 10px 18px rgba(120,50,80,.12), 0 30px 46px -10px rgba(120,50,80,.34);
+}
+:root[data-look="blonde"] body {
+  background:
+    radial-gradient(1000px 650px at 10% -10%, rgba(255,255,255,.9), transparent 60%),
+    radial-gradient(800px 600px at 100% 35%, rgba(151,211,107,.16), transparent 62%),
+    linear-gradient(180deg, #f3bccd 0%, #fadbe5 45%, #fff7f9 100%);
+  background-attachment: fixed;
+}
+:root[data-look="blonde"] .namecard { background-image: radial-gradient(rgba(180,82,122,.12) 1px, transparent 1.3px), radial-gradient(600px 300px at 0% 0%, rgba(251,214,226,.6), transparent 70%), var(--sheet); background-size: 18px 18px, 100% 100%, 100% 100%; }
+:root[data-look="blonde"] .namecard h1 { filter: drop-shadow(0 3px 0 rgba(226,120,155,.25)); }
+:root[data-look="blonde"] .namecard .scribble { background: linear-gradient(transparent 62%, rgba(251,214,226,.9) 62% 92%, transparent 92%); }
+:root[data-look="blonde"] .spin { background-image: radial-gradient(520px 280px at 0% 0%, rgba(226,120,155,.14), transparent 65%), radial-gradient(420px 260px at 100% 100%, rgba(151,211,107,.14), transparent 65%), var(--sheet); }
+:root[data-look="blonde"] .spin:has(.deck.playing) { box-shadow: var(--lift), 0 0 0 2px rgba(226,120,155,.45), 0 0 44px -8px rgba(226,120,155,.65); }
+:root[data-look="blonde"] .deck {
+  background: linear-gradient(135deg, #ffffff, #f2dfe6);
+  box-shadow: inset 0 0 0 6px #e8c6d2, inset 0 0 0 7px rgba(255,255,255,.7), 0 6px 0 rgba(120,50,80,.12), 0 20px 30px -10px rgba(120,50,80,.3);
+}
+:root[data-look="blonde"] .deck-hint { color: var(--ink); }
+:root[data-look="blonde"] .note.on { background-image: linear-gradient(160deg, #fff4f8, #fbd6e2 55%, #f5b3c8); box-shadow: var(--lift), 0 0 30px -8px rgba(226,120,155,.65); }
+:root[data-look="blonde"] .note.soon { background-image: repeating-linear-gradient(-45deg, #fff8fa 0 12px, #fbeef2 12px 24px); }
+:root[data-look="blonde"] .loves .love { background-image: linear-gradient(180deg, color-mix(in srgb, var(--accent) 10%, #ffffff), #fdf3f6); }
+:root[data-look="blonde"] .badge::before { border-color: rgba(180,82,122,.4); }
+:root[data-look="blonde"] .polaroid .shot-sun { background: radial-gradient(circle, rgba(255,255,255,.95), rgba(255,255,255,0) 70%); }
+:root[data-look="blonde"] .polaroid .shot img.twinkle { filter: hue-rotate(300deg) saturate(.8) brightness(1.2); }
+:root[data-look="blonde"] .topnav a:nth-child(2) { background: var(--sun); }
+:root[data-look="blonde"] .topnav a:nth-child(3) { background: var(--ivy); }
+
+/* ---------------- endless: deep space, lavender light, everything floats ---------------- */
+:root[data-look="endless"] {
+  --kraft: #0c0a22;
+  --paper: #f7f4ff;
+  --ink: #1c1736;
+  --mute: #6b6491;
+  --sun: #a98bff;
+  --sun-soft: #ddd1ff;
+  --rust: #6a4fd6;
+  --sage: #8ff0e0;
+  --ivy: #3aa9bb;
+  --plum: #e08bd6;
+  --teal: #5fc2ee;
+  --gold: #ffd98a;
+  --tape: rgba(205,190,255,.55);
+  --tape-g: rgba(140,240,220,.5);
+  --tape-p: rgba(255,170,230,.5);
+
+  --glow-a: rgba(140,90,255,.40);
+  --glow-b: rgba(60,180,255,.26);
+  --glow-c: rgba(255,110,200,.24);
+  --vignette: rgba(0,0,12,.62);
+  --page-ink: #d2cbf7;
+  --sheet: linear-gradient(135deg, #fcfbff, #ebe5ff);
+  --name-grad: linear-gradient(115deg, #1c1736 30%, #6a4fd6 64%, #e08bd6);
+  --shot: linear-gradient(180deg, #120f35 0%, #3d2b80 50%, #c47ae0 100%);
+  --lift: 0 2px 3px rgba(0,0,0,.3), 0 14px 30px rgba(0,0,0,.42), 0 0 40px -12px rgba(169,139,255,.5);
+  --lift-hi: 0 3px 4px rgba(0,0,0,.3), 0 20px 36px rgba(0,0,0,.45), 0 0 60px -6px rgba(169,139,255,.75);
+}
+:root[data-look="endless"] body {
+  background:
+    radial-gradient(1000px 700px at 10% 10%, var(--glow-a), transparent 60%),
+    radial-gradient(900px 700px at 100% 55%, var(--glow-b), transparent 62%),
+    radial-gradient(900px 700px at 35% 110%, var(--glow-c), transparent 62%),
+    #0c0a22;
+  background-attachment: fixed;
+}
+:root[data-look="endless"] body::after {
+  content: ""; position: fixed; inset: 0; z-index: -1; pointer-events: none;
+  background-image:
+    radial-gradient(1.6px 1.6px at 30px 40px, rgba(255,255,255,.95), transparent),
+    radial-gradient(1px 1px at 130px 90px, rgba(255,255,255,.75), transparent),
+    radial-gradient(1.3px 1.3px at 210px 24px, rgba(232,220,255,.9), transparent),
+    radial-gradient(1px 1px at 80px 170px, rgba(255,255,255,.65), transparent),
+    radial-gradient(1.5px 1.5px at 250px 140px, rgba(214,244,255,.85), transparent),
+    radial-gradient(1px 1px at 180px 200px, rgba(255,220,250,.7), transparent);
+  background-size: 290px 230px;
+  animation: stars-drift 120s linear infinite, stars-twinkle 4s ease-in-out infinite alternate;
+}
+@keyframes stars-drift { to { background-position: 290px -460px; } }
+@keyframes stars-twinkle { to { opacity: .55; } }
+
+/* paper floats gently, each piece on its own rhythm */
+:root[data-look="endless"] .namecard,
+:root[data-look="endless"] .polaroid,
+:root[data-look="endless"] .reveal.in > .paper,
+:root[data-look="endless"] .reveal.in > .term,
+:root[data-look="endless"] .loves .reveal.in .love,
+:root[data-look="endless"] .note,
+:root[data-look="endless"] .bottom > .paper,
+:root[data-look="endless"] .bottom > .term { animation: float 7s ease-in-out infinite; }
+:root[data-look="endless"] .polaroid { animation-duration: 8.5s; animation-delay: -3s; }
+:root[data-look="endless"] .note:nth-child(even),
+:root[data-look="endless"] .loves .reveal:nth-child(even) .love,
+:root[data-look="endless"] .bottom > .term { animation-duration: 8.2s; animation-delay: -2.5s; }
+:root[data-look="endless"] .note:nth-child(3n) { animation-delay: -5s; }
+@keyframes float { 50% { translate: 0 -7px; } }
+
+:root[data-look="endless"] h2 { background: linear-gradient(180deg, #fbf9ff, #e4dcff); color: var(--ink); text-shadow: none; box-shadow: 0 2px 0 rgba(0,0,0,.3), 0 0 28px -6px rgba(169,139,255,.8); }
+:root[data-look="endless"] .namecard { background-image: radial-gradient(rgba(106,79,214,.14) 1px, transparent 1.3px), radial-gradient(600px 300px at 0% 0%, rgba(221,209,255,.6), transparent 70%), var(--sheet); }
+:root[data-look="endless"] .namecard h1 { filter: drop-shadow(0 3px 0 rgba(169,139,255,.35)); }
+:root[data-look="endless"] .namecard .scribble { background: linear-gradient(transparent 62%, rgba(169,139,255,.3) 62% 92%, transparent 92%); }
+:root[data-look="endless"] .polaroid { box-shadow: var(--lift), 0 0 70px -10px rgba(169,139,255,.55); }
+:root[data-look="endless"] .spin { background-image: radial-gradient(520px 280px at 0% 0%, rgba(169,139,255,.18), transparent 65%), radial-gradient(420px 260px at 100% 100%, rgba(95,194,238,.14), transparent 65%), var(--sheet); }
+:root[data-look="endless"] .spin:has(.deck.playing) { box-shadow: var(--lift), 0 0 0 2px rgba(169,139,255,.5), 0 0 60px -6px rgba(169,139,255,.85); }
+:root[data-look="endless"] .deck {
+  background: radial-gradient(160px 120px at 30% 20%, rgba(169,139,255,.35), transparent 70%), linear-gradient(135deg, #2a2456, #120f2e);
+  box-shadow: inset 0 0 0 6px #0b0920, inset 0 0 0 7px rgba(169,139,255,.35), 0 6px 0 rgba(0,0,0,.25), 0 0 40px -6px rgba(169,139,255,.6);
+}
+:root[data-look="endless"] .note.on { background-image: linear-gradient(160deg, #f1ecff, #ddd1ff 55%, #c3b0ff); box-shadow: var(--lift), 0 0 40px -6px rgba(169,139,255,.8); }
+:root[data-look="endless"] .note.soon { background-image: repeating-linear-gradient(-45deg, #f4f1ff 0 12px, #ece7fd 12px 24px); }
+:root[data-look="endless"] .loves .love { background-image: linear-gradient(180deg, color-mix(in srgb, var(--accent) 14%, #ffffff), #f1edff); }
+:root[data-look="endless"] .badge::before { border-color: rgba(106,79,214,.45); }
+:root[data-look="endless"] .term { box-shadow: 0 0 0 1px rgba(169,139,255,.25), var(--lift); }
+:root[data-look="endless"] .polaroid .shot-sun { background: radial-gradient(circle, rgba(225,210,255,.95), rgba(200,170,255,0) 70%); }
+:root[data-look="endless"] .polaroid .shot img.twinkle { filter: hue-rotate(230deg) brightness(1.3); }
+:root[data-look="endless"] .topnav a:nth-child(2) { background: var(--rust); }
+:root[data-look="endless"] .topnav a:nth-child(3) { background: #2f8fa0; }
+:root[data-look="endless"] .topnav a.here { outline-color: var(--page-ink); }
+:root[data-look="endless"] footer img,
+:root[data-look="endless"] .note .peek { filter: drop-shadow(0 0 6px rgba(220,205,255,.7)); }
+
+/* =====================================================================
+   pixel-art touches: paper cards get a chunky pixel outline (notched corners)
+   and hard pixel drop shadows, to match the pixel scene behind the page.
+   ===================================================================== */
+:root {
+  --px-line: var(--ink);
+  --px-ring: 0 -3px 0 0 var(--px-line), 0 3px 0 0 var(--px-line), -3px 0 0 0 var(--px-line), 3px 0 0 0 var(--px-line);
+  --lift: var(--px-ring), 7px 9px 0 0 rgba(60,35,15,.22);
+  --lift-hi: var(--px-ring), 10px 13px 0 0 rgba(60,35,15,.26);
+}
+:root[data-look="blonde"] {
+  --px-ring: 0 -3px 0 0 #2a1f24, 0 3px 0 0 #2a1f24, -3px 0 0 0 #2a1f24, 3px 0 0 0 #2a1f24;
+  --lift: var(--px-ring), 7px 9px 0 0 rgba(140,60,90,.2);
+  --lift-hi: var(--px-ring), 10px 13px 0 0 rgba(140,60,90,.24);
+}
+:root[data-look="endless"] {
+  --px-ring: 0 -3px 0 0 #cfc6ff, 0 3px 0 0 #cfc6ff, -3px 0 0 0 #cfc6ff, 3px 0 0 0 #cfc6ff;
+  --lift: var(--px-ring), 7px 9px 0 0 rgba(0,0,0,.45);
+  --lift-hi: var(--px-ring), 10px 13px 0 0 rgba(0,0,0,.5), 0 0 30px -4px rgba(169,139,255,.6);
+}
+.paper.torn { box-shadow: none; }
+.topnav a, .topnav .mood-btn, h2 { image-rendering: pixelated; }
+
+@media (prefers-reduced-motion: reduce) {
+  .sticker, .doodles .doodle, .polaroid .shot img.twinkle, .badge svg, .badge-core, h2::before, .namecard h1 .dot,
+  .note .peek { animation: none; }
+  :root[data-look="endless"] body::after,
+  :root[data-look="endless"] .namecard, :root[data-look="endless"] .polaroid, :root[data-look="endless"] .reveal.in > .paper,
+  :root[data-look="endless"] .reveal.in > .term, :root[data-look="endless"] .loves .reveal.in .love, :root[data-look="endless"] .note,
+  :root[data-look="endless"] .bottom > .paper, :root[data-look="endless"] .bottom > .term { animation: none; }
+  .loves .love, .note, .topnav a, .polaroid, .project .thumb { transition: none; }
+  .loves .love:hover img { animation: none; }
+}
+
+/* the song title under the record on the turntable */
+.nowplaying .track { margin: -.6rem 0 .9rem; font-size: .85rem; color: var(--rust); }
