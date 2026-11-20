@@ -1,8 +1,20 @@
 # scrapbook source
 
-The site is a small React app. The repo root holds the **built** static files
-(`index.html`, `assets/`, `images/`, `fonts/`). Those are what TinkerHub publishes.
-This `app/` folder is the source.
+The site is a small React app. The repo root holds the **built** static files, laid out like
+the fellowship guide. Those are what TinkerHub publishes:
+
+```
+index.html            profile + links to every month
+about.html            about me
+months/month-1.html   one page per month (month-1 … month-6)
+projects/dewy.html    one page per project
+assets/ images/ fonts/ videos/
+```
+
+This `app/` folder is the source. Each page above has a matching HTML file in `app/`; to add a
+project, copy `app/projects/dewy.html`, change its `data-id`, and add it to `pages` in
+`vite.config.js`. Links between pages are relative (`../index.html`), so the site works inside
+`…/ulp26/abijit-arun/`.
 
 ## editing
 

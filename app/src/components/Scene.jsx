@@ -634,7 +634,8 @@ export default function Scene({ mood, view, listening }) {
         drawSea(sea.getContext("2d"), pal.cur);
         bgDirty = moving;
       }
-      const t = reduced ? 0 : now - start;
+      // the first frame can be stamped a hair before `start`; a negative t breaks the sprite lookups
+      const t = reduced ? 0 : Math.max(0, now - start);
       let dirty = resized;
       if (now - lastWorld > 60 || moving) { drawWorld(g, t, pal.cur, sky, sea, p.listening); lastWorld = now; dirty = true; }
       const camMoving = !reduced && now - cam.at < 1450;

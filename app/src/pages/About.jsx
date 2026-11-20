@@ -1,7 +1,8 @@
 import { Paper, Tape, Label } from "../components/Paper.jsx";
+import { homeHref } from "../site.js";
 import { profile } from "../content.js";
 
-// The About page lives inside the scrapbook (#/about), so the whole site stays on one index.html.
+// The About page (about.html), in the same scrapbook design as the rest of the site.
 export default function About() {
   return (
     <div className="wrap about">
@@ -11,7 +12,7 @@ export default function About() {
         <h1>abijit arun</h1>
         <p className="intro">{profile.intro}</p>
         <p className="hand">
-          find me on <a href={profile.github}>github</a> · <a href="#/">back to the scrapbook →</a>
+          find me on <a href={profile.github}>github</a> · <a href={homeHref()}>back to the scrapbook →</a>
         </p>
       </Paper>
 
