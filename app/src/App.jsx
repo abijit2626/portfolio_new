@@ -7,6 +7,7 @@ import Project from "./pages/Project.jsx";
 import About from "./pages/About.jsx";
 import { Paper } from "./components/Paper.jsx";
 import Cliffside from "./components/Cliffside.jsx";
+import { homeHref } from "./site.js";
 
 // The mood a visitor picked on the opening cliffside scene. Kept for this browser tab session
 // only, so a new visit gets the opening again.
@@ -18,31 +19,19 @@ function readLook() {
   } catch { return null; }
 }
 
-// Hash routing (#/month/1) so the site works as plain static files anywhere.
-function useRoute() {
-  const get = () => (window.location.hash.replace(/^#/, "") || "/");
-  const [route, setRoute] = useState(get);
-  useEffect(() => {
-    const on = () => { setRoute(get()); window.scrollTo({ top: 0 }); };
-    window.addEventListener("hashchange", on);
-    return () => window.removeEventListener("hashchange", on);
-  }, []);
-  return route;
-}
 
 function Lost() {
   return (
     <div className="wrap">
       <Paper torn className="blank">
         <h1>404</h1>
-        <p className="hand">the cat knocked this page off the table. <a href="#/">go home →</a></p>
+        <p className="hand">the cat knocked this page off the table. <a href={homeHref()}>go home →</a></p>
       </Paper>
     </div>
   );
 }
 
-export default function App() {
-  const route = useRoute();
+export default function App({ route }) {
   const [look, setLook] = useState(() => readLook() || "orange");
   const [firstVisit] = useState(() => !readLook());
   const [reopen, setReopen] = useState(0);
@@ -61,11 +50,6 @@ export default function App() {
   else if (month) page = <Month n={Number(month[1])} />;
   else if (proj) page = <Project id={proj[1]} />;
   else page = <Lost />;
-
-  useEffect(() => {
-    const titles = { "/": "abijit arun · scrapbook of making" };
-    document.title = titles[route] || `${route.split("/").pop()} · abijit arun`;
-  }, [route]);
 
   return (
     <>

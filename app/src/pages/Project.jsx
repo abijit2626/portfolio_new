@@ -1,5 +1,6 @@
 import { projects, months } from "../content.js";
 import { Paper, Tape, Px, Label, Reveal, img } from "../components/Paper.jsx";
+import { homeHref, monthHref } from "../site.js";
 import Dewy from "../components/Dewy.jsx";
 
 const ICONS = ["px-sparkle.svg", "px-heart.svg", "px-cat.svg", "px-note.svg", "px-headphones.svg", "px-laptop.svg"];
@@ -91,8 +92,8 @@ export default function Project({ id }) {
       </Paper>
 
       <div className="pager">
-        <a className="paper pg" href={`#/month/${p.month}`}>← {month?.name}</a>
-        <a className="pg-home pixel" href="#/">home</a>
+        <a className="paper pg" href={monthHref(p.month)}>← {month?.name}</a>
+        <a className="pg-home pixel" href={homeHref()}>home</a>
         <a className="paper pg" href={p.repo} target="_blank" rel="noreferrer">code on github ↗</a>
       </div>
     </div>

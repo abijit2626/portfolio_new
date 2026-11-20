@@ -1,4 +1,5 @@
 import { profile, loves, months, projects, albums } from "../content.js";
+import { monthHref, projectHref } from "../site.js";
 import { Paper, Tape, Px, Sticker, Label, Reveal, img } from "../components/Paper.jsx";
 import Dewy from "../components/Dewy.jsx";
 import Turntable from "../components/Turntable.jsx";
@@ -78,7 +79,7 @@ function Journal() {
       {months.map((m, i) => (
         <a
           key={m.n}
-          href={`#/month/${m.n}`}
+          href={monthHref(m.n)}
           className={`paper note ${m.status === "now" ? "on" : ""} ${m.status === "soon" ? "soon" : ""}`}
         >
           <Tape color={tapes[i]} />
@@ -99,14 +100,14 @@ function Builds() {
     <div className="bottom">
       <Paper className="project">
         <Tape style={{ top: -10, left: "40%", transform: "rotate(-3deg)" }} />
-        <a className="thumb" href="#/projects/dewy" aria-label="open the dewy project page">
+        <a className="thumb" href={projectHref("dewy")} aria-label="open the dewy project page">
           <div><img className="px" src={img("px-dewy.svg")} alt="" /></div>
         </a>
         <div>
-          <h3><a href="#/projects/dewy">{p.name}</a></h3>
+          <h3><a href={projectHref("dewy")}>{p.name}</a></h3>
           <p>{p.tagline} {p.short}</p>
           <p className="tags">{p.tags.map((t) => <span key={t} className="chip pixel">{t}</span>)}</p>
-          <a className="hand more" href="#/projects/dewy">read the build log →</a>
+          <a className="hand more" href={projectHref("dewy")}>read the build log →</a>
         </div>
       </Paper>
       <Terminal />

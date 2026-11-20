@@ -1,14 +1,15 @@
 import { months, projects } from "../content.js";
 import { Paper, Tape, Px, Label, Reveal, img } from "../components/Paper.jsx";
+import { homeHref, monthHref, projectHref, prefix } from "../site.js";
 
 function Pager({ n }) {
   const prev = months.find((m) => m.n === n - 1);
   const next = months.find((m) => m.n === n + 1);
   return (
     <div className="pager">
-      {prev ? <a className="paper pg" href={`#/month/${prev.n}`}>← {prev.name}</a> : <span />}
-      <a className="pg-home pixel" href="#/">home</a>
-      {next ? <a className="paper pg" href={`#/month/${next.n}`}>{next.name} →</a> : <span />}
+      {prev ? <a className="paper pg" href={monthHref(prev.n)}>← {prev.name}</a> : <span />}
+      <a className="pg-home pixel" href={homeHref()}>home</a>
+      {next ? <a className="paper pg" href={monthHref(next.n)}>{next.name} →</a> : <span />}
     </div>
   );
 }
@@ -17,7 +18,7 @@ function Strip({ active }) {
   return (
     <div className="month-strip" aria-label="all months">
       {months.map((m) => (
-        <a key={m.n} href={`#/month/${m.n}`} className={`${m.n === active ? "on" : ""} ${m.status}`}>
+        <a key={m.n} href={monthHref(m.n)} className={`${m.n === active ? "on" : ""} ${m.status}`}>
           {String(m.n).padStart(2, "0")}
         </a>
       ))}
@@ -84,7 +85,7 @@ export default function Month({ n }) {
         {(m.photos.length ? m.photos : [{ caption: "photo coming soon" }, { caption: "first power-on?" }, { caption: "the mess on my desk" }]).map((p, i) => (
           <figure key={i} className="polaroid small" style={{ "--tilt": `${[-3, 2, -1.5][i % 3]}deg` }}>
             <Tape color={["", "g", "p"][i % 3]} style={{ top: -10, left: "35%" }} />
-            {p.src ? <img src={p.src} alt={p.caption} loading="lazy" /> : <div className="empty pixel">📷 add a photo</div>}
+            {p.src ? <img src={prefix() + p.src}alt={p.caption} loading="lazy" /> : <div className="empty pixel">📷 add a photo</div>}
             <figcaption className="hand">{p.caption}</figcaption>
           </figure>
         ))}
@@ -113,7 +114,7 @@ export default function Month({ n }) {
       <Label>projects this month</Label>
       <div className="mini-projects">
         {m.projects.map((id) => (
-          <a key={id} href={`#/projects/${id}`} className="paper mini">
+          <a key={id} href={projectHref(id)} className="paper mini">
             <Px src="px-dewy.svg" />
             <div><b>{projects[id].name}</b><span className="hand">{projects[id].tagline}</span></div>
           </a>

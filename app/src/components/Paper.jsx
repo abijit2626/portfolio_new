@@ -1,6 +1,7 @@
 import { useEffect, useRef, useState } from "react";
 
-export const img = (name) => `images/${name}`;
+import { img } from "../site.js";
+export { img };
 
 export function Px({ src, alt = "", className = "", style }) {
   return <img className={`px ${className}`} src={img(src)} alt={alt} style={style} draggable={false} />;
