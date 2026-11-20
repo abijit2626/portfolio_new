@@ -8,7 +8,7 @@ const CAT = String.raw` /\_/\
 const FILES = {
   "about.txt": "engineering student · jcet palakkad\ndefensive security, ctfs, guitar, vinyl, cats.",
   "now.txt": terminal.now,
-  "records.txt": albums.map((a, i) => `${i + 1}. ${a.title}${a.song ? ` · ${a.song.title}` : ""}`).join("\n"),
+  "records.txt": albums.map((a, i) => `${i + 1}. ${a.title}`).join("\n"),
   "journal.txt": months.map((m) => `${String(m.n).padStart(2, "0")} ${m.name.padEnd(9)} ${m.status === "soon" ? "[locked]" : "[open]"}`).join("\n"),
 };
 

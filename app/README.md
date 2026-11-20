@@ -18,7 +18,7 @@ project, copy `app/projects/dewy.html`, change its `data-id`, and add it to `pag
 
 ## editing
 
-- **Words:** almost everything lives in `src/content.js` (profile, albums + their songs, months, Dewy).
+- **Words:** almost everything lives in `src/content.js` (profile, albums (they set the theme), months, Dewy).
 - **Photos:** compress to `.webp`/`.jpg`, put them in `public/images/`, then add them to a
   month's `photos` list in `content.js`, e.g. `{ src: "images/m1-parts.webp", caption: "day one" }`.
 - **Look:** `src/styles/base.css` and `src/styles/components.css`.

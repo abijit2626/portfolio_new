@@ -1,7 +1,6 @@
 import { useEffect, useRef, useState } from "react";
 import { albums } from "../content.js";
 import Scene from "./Scene.jsx";
-import { playSong } from "../player.js";
 
 // The opening: me on a cliff by the sea with my cat. Click to zoom into my laptop, pick a
 // record, and the camera settles back into that record's mood. The moving scene then stays
@@ -68,8 +67,6 @@ export default function Cliffside({ look, startFull, reopen, onPick }) {
     setPlaying(id);
     setPhase("playing");
     onPick(id); // the page underneath switches theme now
-    const song = albums.find((a) => a.id === id)?.song;
-    if (song) playSong(song.file); // this click is what lets the browser play sound
     pickTimer.current = setTimeout(() => { setMood(id); setPhase("settle"); }, wait(1300));
   };
 
