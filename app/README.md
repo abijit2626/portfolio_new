@@ -8,7 +8,7 @@ index.html            profile + links to every month
 about.html            about me
 months/month-1.html   one page per month (month-1 … month-6)
 projects/dewy.html    one page per project
-assets/ images/ fonts/ videos/
+assets/ images/ fonts/
 ```
 
 This `app/` folder is the source. Each page above has a matching HTML file in `app/`; to add a
