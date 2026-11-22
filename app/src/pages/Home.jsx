@@ -1,7 +1,8 @@
-import { profile, loves, months, projects } from "../content.js";
+import { profile, loves, months, projects, albums } from "../content.js";
 import { monthHref, projectHref } from "../site.js";
 import { Paper, Tape, Px, Sticker, Label, Reveal, img } from "../components/Paper.jsx";
 import Dewy from "../components/Dewy.jsx";
+import Turntable from "../components/Turntable.jsx";
 import Terminal from "../components/Terminal.jsx";
 
 function Hero() {
@@ -114,7 +115,8 @@ function Builds() {
   );
 }
 
-export default function Home() {
+export default function Home({ look }) {
+  const album = albums.find((a) => a.id === look);
   return (
     <div className="wrap">
       <img className="ivy" src={img("ivy.svg")} alt="" style={{ height: 460, top: -10, right: -50, transform: "rotate(10deg)" }} />
@@ -126,6 +128,9 @@ export default function Home() {
 
       <Label>things i love</Label>
       <Loves />
+
+      <Label id="spinning">now spinning</Label>
+      <Reveal><Turntable album={album} /></Reveal>
 
       <Label id="journal">the journal</Label>
       <Journal />

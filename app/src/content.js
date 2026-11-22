@@ -26,10 +26,15 @@ export const loves = [
 // The opening screen: visitors pick one of these and the whole site takes on its mood.
 // `id` must stay "orange", "blonde" or "endless" (those names are wired to the themes in rich.css).
 export const albums = [
-  // color / label = how its record looks in the opening scene
-  { id: "orange", title: "channel orange", artist: "frank ocean", vibe: "sunrise · warm · golden", color: "#f08a3c", label: "#fbe3c4" },
-  { id: "blonde", title: "blonde", artist: "frank ocean", vibe: "spring · flowers · pink + white sky", color: "#f4a3be", label: "#ffffff" },
-  { id: "endless", title: "endless", artist: "frank ocean", vibe: "night · moon · windy · dreamy", color: "#2a2456", label: "#b39cff" },
+  // color / label = how its record looks on the turntable
+  // song = the track that plays when it's picked. The fellowship publisher only copies the
+  // guide's media types, so songs are audio-only .mp4 files in app/public/videos/, e.g.
+  //   song: { file: "videos/nikes.mp4", title: "nikes" }
+  // (make one with: ffmpeg -i song.mp3 -vn -c:a aac -b:a 128k -movflags +faststart song.mp4)
+  // (leave it as null and the record just spins silently)
+  { id: "orange", title: "channel orange", artist: "frank ocean", vibe: "sunrise · warm · golden", color: "#f08a3c", label: "#fbe3c4", song: { file: "videos/forrest-gump.mp4", title: "forrest gump" } },
+  { id: "blonde", title: "blonde", artist: "frank ocean", vibe: "spring · flowers · pink + white sky", color: "#f4a3be", label: "#ffffff", song: { file: "videos/pink-white.mp4", title: "pink + white" } },
+  { id: "endless", title: "endless", artist: "frank ocean", vibe: "night · moon · windy · dreamy", color: "#2a2456", label: "#b39cff", song: { file: "videos/rushes.mp4", title: "rushes" } },
 ];
 
 // status: "now" | "done" | "soon"

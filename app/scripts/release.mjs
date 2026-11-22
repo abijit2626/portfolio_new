@@ -7,7 +7,7 @@ const app = join(dirname(fileURLToPath(import.meta.url)), "..");
 const root = join(app, "..");
 const dist = join(app, "dist");
 
-for (const p of ["assets", "images", "fonts", "months", "projects", "about.html", "index.html"]) {
+for (const p of ["assets", "images", "fonts", "audio", "videos", "months", "projects", "about.html", "index.html"]) {
   const t = join(root, p);
   if (existsSync(t)) rmSync(t, { recursive: true, force: true });
 }
