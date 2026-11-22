@@ -85,7 +85,11 @@ export default function Month({ n }) {
         {(m.photos.length ? m.photos : [{ caption: "photo coming soon" }, { caption: "first power-on?" }, { caption: "the mess on my desk" }]).map((p, i) => (
           <figure key={i} className="polaroid small" style={{ "--tilt": `${[-3, 2, -1.5][i % 3]}deg` }}>
             <Tape color={["", "g", "p"][i % 3]} style={{ top: -10, left: "35%" }} />
-            {p.src ? <img src={prefix() + p.src}alt={p.caption} loading="lazy" /> : <div className="empty pixel">📷 add a photo</div>}
+            {p.video ? (
+              <video src={prefix() + p.video} controls playsInline preload="metadata" aria-label={p.caption} />
+            ) : p.src ? (
+              <img src={prefix() + p.src} alt={p.alt || p.caption} loading="lazy" />
+            ) : <div className="empty pixel">📷 add a photo</div>}
             <figcaption className="hand">{p.caption}</figcaption>
           </figure>
         ))}

@@ -70,9 +70,12 @@ export const months = [
       "wake word distance: printed live scores every second. normal-distance tries scored 0.71–0.97 against a cutoff of 0.98, near misses rather than failures. at 0.90 it woke every time.",
       "pick-up detection: needs 7° of tilt for 0.15 s from rest, and ignores taps, being put down, and dewy's own speaker while it answers.",
     ],
+    // photos go in app/public/images/, videos (.mp4) in app/public/videos/
+    // a video entry uses `video:` instead of `src:`. `alt` describes a photo for screen readers.
     photos: [
-      // add my own renders / photos here, e.g.
-      // { src: "images/dewy-faces.webp", caption: "twelve of dewy's screens" },
+      { src: "images/dewy-photo.webp", caption: "dewy, in person", alt: "dewy on my desk" },
+      { video: "videos/dewy-1.mp4", caption: "dewy in action" },
+      { video: "videos/dewy-2.mp4", caption: "dewy in action, part 2" },
     ],
     learned: [
       "designing the behaviour before the hardware made picking parts easy. every part has a reason to be there.",
