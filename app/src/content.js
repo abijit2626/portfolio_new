@@ -34,7 +34,7 @@ export const albums = [
   // (leave it as null and the record just spins silently)
   { id: "orange", title: "channel orange", artist: "frank ocean", vibe: "sunrise · warm · golden", color: "#f08a3c", label: "#fbe3c4", song: { file: "videos/forrest-gump.mp4", title: "forrest gump" } },
   { id: "blonde", title: "blonde", artist: "frank ocean", vibe: "spring · flowers · pink + white sky", color: "#f4a3be", label: "#ffffff", song: { file: "videos/pink-white.mp4", title: "pink + white" } },
-  { id: "endless", title: "endless", artist: "frank ocean", vibe: "night · moon · windy · dreamy", color: "#2a2456", label: "#b39cff", song: { file: "videos/rushes.mp4", title: "rushes" } },
+  { id: "endless", title: "endless", artist: "frank ocean", vibe: "night · moon · windy · dreamy", color: "#2a2456", label: "#b39cff", song: { file: "videos/wither.mp4", title: "wither" } },
 ];
 
 // status: "now" | "done" | "soon"
