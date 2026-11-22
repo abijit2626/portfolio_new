@@ -8,6 +8,7 @@ import About from "./pages/About.jsx";
 import { Paper } from "./components/Paper.jsx";
 import Cliffside from "./components/Cliffside.jsx";
 import { homeHref } from "./site.js";
+import { months } from "./content.js";
 
 // The mood a visitor picked on the opening cliffside scene. Kept for this browser tab session
 // only, so a new visit gets the opening again.
@@ -20,6 +21,26 @@ function readLook() {
 }
 
 
+// Every page is still its own HTML file (so each URL works on its own), but moving between them
+// inside the site swaps the page in place instead of reloading. That keeps the music playing.
+const PAGE = /(months\/month-(\d+)|projects\/([\w-]+)|about|index)\.html$/;
+function locate(pathname) {
+  const m = pathname.match(PAGE);
+  const base = m ? pathname.slice(0, m.index) : pathname.replace(/[^/]*$/, "");
+  let route = "/", prefix = "";
+  if (m && m[2]) { route = `/month/${m[2]}`; prefix = "../"; }
+  else if (m && m[3]) { route = `/projects/${m[3]}`; prefix = "../"; }
+  else if (m && m[1] === "about") route = "/about";
+  return { base, route, prefix };
+}
+function titleFor(route) {
+  const m = route.match(/^\/month\/(\d+)$/);
+  if (m) return `${months.find((x) => x.n === Number(m[1]))?.name || "journal"} · abijit arun`;
+  if (route === "/about") return "about · abijit arun";
+  if (route.startsWith("/projects/")) return `${route.slice(10)} · abijit arun`;
+  return "abijit arun · scrapbook of making";
+}
+
 function Lost() {
   return (
     <div className="wrap">
@@ -31,12 +52,39 @@ function Lost() {
   );
 }
 
-export default function App({ route }) {
+export default function App({ route: first }) {
+  const [route, setRoute] = useState(first);
   const [look, setLook] = useState(() => readLook() || "orange");
   const [firstVisit] = useState(() => !readLook());
   const [reopen, setReopen] = useState(0);
 
   useEffect(() => { document.documentElement.dataset.look = look; }, [look]);
+
+  useEffect(() => {
+    const go = (r, prefix) => {
+      window.SITE_PREFIX = prefix; // links and images are written relative to the page's folder
+      document.title = titleFor(r);
+      setRoute(r);
+    };
+    const onClick = (e) => {
+      if (e.defaultPrevented || e.button !== 0 || e.metaKey || e.ctrlKey || e.shiftKey || e.altKey) return;
+      const a = e.target.closest && e.target.closest("a[href]");
+      if (!a || a.target || a.hasAttribute("download")) return;
+      const url = new URL(a.href, location.href);
+      if (url.origin !== location.origin || !PAGE.test(url.pathname)) return;
+      const to = locate(url.pathname);
+      if (to.base !== locate(location.pathname).base) return; // not one of this site's pages
+      e.preventDefault();
+      if (url.pathname === location.pathname) { window.scrollTo({ top: 0 }); return; }
+      history.pushState(null, "", url.pathname + url.search);
+      go(to.route, to.prefix);
+      window.scrollTo({ top: 0 });
+    };
+    const onPop = () => { const to = locate(location.pathname); go(to.route, to.prefix); };
+    document.addEventListener("click", onClick);
+    window.addEventListener("popstate", onPop);
+    return () => { document.removeEventListener("click", onClick); window.removeEventListener("popstate", onPop); };
+  }, []);
 
   const choose = (id) => {
     setLook(id);
