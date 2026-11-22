@@ -274,3 +274,9 @@ footer .sleepy { animation: breathe 3s ease-in-out infinite; }
   .soundhole { display: none; }
   .namecard h1 { margin-right: 70px; }
 }
+.licence { text-align: center; margin: 28px auto 8px; max-width: 640px; opacity: .8; }
+@media (max-width: 560px) {
+  .graph { padding: .9rem .6rem; }
+  .graph th, .graph td { padding: .45rem .4rem; font-size: .9em; }
+  .graph td.pixel { white-space: normal; overflow-wrap: anywhere; }
+}

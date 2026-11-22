@@ -68,6 +68,19 @@ export default function Project({ id }) {
         ))}
       </ol>
 
+      {p.numbers && (
+        <>
+          <Label>numbers</Label>
+          <Paper className="graph">
+            <Tape style={{ top: -10, left: "12%", transform: "rotate(3deg)" }} />
+            <table>
+              <thead><tr><th>what</th><th>before</th><th>after</th></tr></thead>
+              <tbody>{p.numbers.map(([a, b, c]) => <tr key={a}><td className="pixel">{a}</td><td>{b}</td><td>{c}</td></tr>)}</tbody>
+            </table>
+          </Paper>
+        </>
+      )}
+
       <div className="two">
         <div>
           <Label>build log</Label>
@@ -81,7 +94,7 @@ export default function Project({ id }) {
           <Label>what didn't work (yet)</Label>
           <div className="stickies one">
             {p.failed.map((f, i) => <div key={i} className={`sticky s${(i + 1) % 3}`}><span className="hand">{f}</span></div>)}
-            <div className="sticky s2"><span className="hand">more to come once the hardware is on the bench…</span></div>
+            <div className="sticky s2"><span className="hand">more to come as dewy gets built…</span></div>
           </div>
         </div>
       </div>
@@ -90,6 +103,8 @@ export default function Project({ id }) {
       <Paper className="todo wide">
         {p.next.map((t, i) => <label key={i} className="check"><input type="checkbox" /> <span>{t}</span></label>)}
       </Paper>
+
+      {p.licence && <p className="hand licence">{p.licence}</p>}
 
       <div className="pager">
         <a className="paper pg" href={monthHref(p.month)}>← {month?.name}</a>
